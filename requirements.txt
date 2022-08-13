@@ -1,0 +1,4 @@
+blkinfo==0.2.0
+colorama==0.4.5
+pluginbase==1.0.1
+psutil==5.9.1
