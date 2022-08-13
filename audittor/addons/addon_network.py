@@ -7,8 +7,9 @@ RED = Fore.RED
 GREEN = Fore.GREEN
 RESET = Fore.RESET
 
-NAME = 'Analisis de red'
-VERSION = '0.1'
+NAME = 'check_network'
+VERSION = '0.2'
+DESCRIPTION = 'Analisis de red'
 
 def is_addon(self):
     # Escanear puertos
