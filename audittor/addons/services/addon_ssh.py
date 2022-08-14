@@ -8,8 +8,9 @@ RED = Fore.RED
 GREEN = Fore.GREEN
 RESET = Fore.RESET
 
-NAME = 'Analisis servicio SSH'
-VERSION = '0.1'
+NAME = 'check_ssh'
+VERSION = '0.2'
+DESCRIPTION = 'Analisis servicio SSH'
 
 def is_addon(self):
     check_ssh()

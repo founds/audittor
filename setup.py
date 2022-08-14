@@ -10,7 +10,7 @@ REQUIREMENTS = [i.strip() for i in open("requirements.txt").readlines()]
 
 setup(
     name='audittor',
-    version='0.1',
+    version='0.2',
     package_dir={"": "audittor"},
     packages=find_packages(where="audittor"),
     url='https://www.altsys.es',

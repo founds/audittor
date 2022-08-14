@@ -13,8 +13,9 @@ RED = Fore.RED
 GREEN = Fore.GREEN
 RESET = Fore.RESET
 
-NAME = 'Recopilar información del sistema'
-VERSION = '0.1'
+NAME = "info_system"
+VERSION = "0.2"
+DESCRIPTION = "Recopilar información del sistema"
 
 def is_addon(self):
     print("\n     - Sistema Operativo: " + platform.system())
