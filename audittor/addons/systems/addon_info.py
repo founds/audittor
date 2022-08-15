@@ -13,6 +13,7 @@ RED = Fore.RED
 GREEN = Fore.GREEN
 RESET = Fore.RESET
 
+ID = "addon_system"
 NAME = "info_system"
 VERSION = "0.2"
 DESCRIPTION = "Recopilar información del sistema"

@@ -6,11 +6,13 @@ import sys
 from functools import partial
 from colorama import Fore
 from configobj import ConfigObj
+from tabulate import tabulate
 from pluginbase import PluginBase
 
 RED = Fore.RED
 GREEN = Fore.GREEN
 RESET = Fore.RESET
+
 
 class AddonManager(object):
 
@@ -114,7 +116,6 @@ class AddonManager(object):
         # Each application has a name
         self.name = name
 
-
         source = self.plugin_base.make_plugin_source(
             searchpath=[self.get_path(self.path + '/addons/%s') % name],
             identifier=self.name)
@@ -132,7 +133,6 @@ class AddonManager(object):
             except KeyError:
                 print(f"{RED}     - Addon no encontrado pero registrado: " + self.name + f"{RESET}")
 
-
     # Activar addon
     def enable_addon(self, id_addon):
         config = ConfigObj(self.path + "/addons.cfg")
@@ -144,6 +144,41 @@ class AddonManager(object):
     def disable_addon(self, id_addon):
         config = ConfigObj(self.path + "/addons.cfg")
         addon = config[id_addon]
-        addon["Status"] = "True"
+        addon["Status"] = "False"
         config.write()
 
+    # Listar addons
+    def list_addons(self):
+        addon_dict = {}
+
+        here = os.path.abspath(os.path.dirname(__file__))
+        get_path = partial(os.path.join, here)
+
+        with os.scandir(get_path(self.path + '/addons')) as ficheros:
+            subdirectorios = [fichero.name for fichero in ficheros if fichero.is_dir()]
+
+        subdirectorios.remove("__pycache__")
+
+        plugin_dir = get_path(self.path + '/addons')
+
+        plugin_base = PluginBase(
+            package='addons', searchpath=[plugin_dir]
+        )
+
+        addons = []
+
+        for path_addon in subdirectorios:
+            plugin_source = plugin_base.make_plugin_source(
+                searchpath=[get_path(self.path + '/addons/%s') % path_addon], persist=True)
+
+            for plugin_name in plugin_source.list_plugins():
+                addon_dict[plugin_name] = plugin_source.load_plugin(plugin_name)
+
+            addons.append(
+                [addon_dict[plugin_name].ID, addon_dict[plugin_name].NAME, addon_dict[plugin_name].VERSION,
+                 addon_dict[plugin_name].DESCRIPTION, ]
+            )
+
+        print(tabulate(addons, headers=["ID", "NAME", "VERSION", "DESCRIPTION"], tablefmt='grid'))
+
+        return addon_dict

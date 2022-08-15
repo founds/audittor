@@ -19,6 +19,7 @@ class Audittor():
         print("############################################\n")
 
         AddonManager()
+        AddonManager().list_addons()
 
 
 if __name__ == '__main__':
