@@ -114,14 +114,6 @@ class AddonManager(object):
         # Each application has a name
         self.name = name
 
-        # And a dictionary where it stores "formatters".  These will be
-        # functions provided by plugins which format strings.
-        self.formatters = {}
-
-        # and a source which loads the plugins from the "app_name/plugins"
-        # folder.  We also pass the application name as identifier.  This
-        # is optional but by doing this out plugins have consistent
-        # internal module names which allows pickle to work.
 
         source = self.plugin_base.make_plugin_source(
             searchpath=[self.get_path(self.path + '/addons/%s') % name],
@@ -130,9 +122,6 @@ class AddonManager(object):
         print("\n - Ejecutando la auditación del sistema")
         print(f"\n{GREEN}   - Auditando: %s {RESET}\n" % self.name)
 
-        # Here we list all the plugins the source knows about, load them
-        # and the use the "setup" function provided by the plugin to
-        # initialize the plugin.
         for addon_name in source.list_plugins():
             addon = source.load_plugin(addon_name)
 
@@ -144,44 +133,17 @@ class AddonManager(object):
                 print(f"{RED}     - Addon no encontrado pero registrado: " + self.name + f"{RESET}")
 
 
-    def register_formatter(self, name, formatter):
-        """A function a plugin can use to register a formatter."""
-        self.formatters[name] = formatter
+    # Activar addon
+    def enable_addon(self, id_addon):
+        config = ConfigObj(self.path + "/addons.cfg")
+        addon = config[id_addon]
+        addon["Status"] = "True"
+        config.write()
 
-def run_demo(app, source):
-    """Shows all formatters in demo mode of an application."""
-    print('Formatters for %s:' % app.name)
-    print('       input: %s' % source)
-    for name, fmt in sorted(app.formatters.items()):
-        print('  %10s: %s' % (name, fmt(source)))
-    print('')
+    # Desactivar addon
+    def disable_addon(self, id_addon):
+        config = ConfigObj(self.path + "/addons.cfg")
+        addon = config[id_addon]
+        addon["Status"] = "True"
+        config.write()
 
-def main():
-    # This is the demo string we want to format.
-    source = 'This is a cool demo text to show this functionality.'
-
-    # Set up two applications.  One loads plugins from ./app1/plugins
-    # and the second one from ./app2/plugins.  Both will also load
-    # the default ./builtin_plugins.
-    app1 = AddonManager('app1')
-    app2 = AddonManager('app2')
-
-    # Run the demo for both
-    run_demo(app1, source)
-    run_demo(app2, source)
-
-    # And just to show how the import system works, we also showcase
-    # importing plugins regularly:
-    '''with app1.source:
-        from audittor.addons import addon_network
-        print('Plugin module: %s' % secret)'''
-
-if __name__ == '__main__':
-    main()
-
-
-'''
-class AddonManager2:
-
-    
-'''
