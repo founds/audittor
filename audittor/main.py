@@ -5,10 +5,14 @@ from manager import AddonManager
 import os
 import sys
 from datetime import datetime
+import argparse
+from colorama import Fore
 
 
 VERSION = "v0.3"
 
+RED = Fore.RED
+RESET = Fore.RESET
 
 class Audittor():
 
@@ -33,15 +37,54 @@ class Audittor():
         if not os.path.exists(self.path + "/audittor.cfg"):
             pass
 
-        #AddonManager()
+        self.parser = argparse.ArgumentParser(description="Opciones de Audittor", argument_default=argparse.SUPPRESS)
 
-    def generate_log(self):
+        self.parser.add_argument("-L", "--list_addons", help="Muestra todos los addons.")
+        self.parser.add_argument("-e", "--enabled_addons", help="Activar addon.",
+                                 type=str, )
+        self.parser.add_argument("-d", "--disabled_addons", help="Desactivar addon.",
+                                 type=str, )
+
+    def audittor_cli(self):
+        args = self.parser.parse_args()
+
+        if len(sys.argv) < 2:
+            print(f"{RED}No se ha especificado ningún argumento. Se inicia la audición por defecto.{RESET}\n")
+            exec_addons = AddonManager().load_addons()
+
+            for exec_addon in exec_addons:
+                AddonManager().exec_addon(exec_addon)
+
+            sys.exit(1)
+
+        if args.list_addons:
+            AddonManager().read_addons()
+
+        if args.enabled_addons:
+            print("Activando addon: %s" % args.enabled_addons)
+            status = AddonManager().enable_addon(args.enabled_addons)
+
+            if status == True:
+                print("Addon %s activado", args.enabled_addons)
+            else:
+                print(f"{RED} - %s {RESET}" % status)
+
+        if args.disabled_addons:
+            print("Desactivando addon: %s" % args.disabled_addons)
+            status = AddonManager().disable_addon(args.disabled_addons)
+            if status == True:
+                print("Addon %s desactivado" % args.disabled_addons)
+            else:
+                print(f"{RED} - %s {RESET}" % status)
+
+
+    def generate_log(self, data):
         with open(self.path + "/log.txt", 'w') as sys.stdout:
-            print("Audittor %s" % VERSION )
+            print("Audittor %s" % VERSION)
             print("Fecha de analisis: %s    Hora de analisis: %s" % (datetime.today().strftime('%Y/%m/%d'),
-                  datetime.today().strftime('%H:%M:%S')))
+                                                                     datetime.today().strftime('%H:%M:%S')))
             print("\n")
 
 
 if __name__ == '__main__':
-    Audittor()
+    Audittor().audittor_cli()

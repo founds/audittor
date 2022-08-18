@@ -31,8 +31,6 @@ class AddonManager(object):
             package='addons', searchpath=[self.plugin_dir]
         )
 
-        self.load_addons()
-
     # Crear archivo de addons base
     def newconfigfiles(self):
 
@@ -137,15 +135,27 @@ class AddonManager(object):
     def enable_addon(self, id_addon):
         config = ConfigObj(self.path + "/addons.cfg")
         addon = config[id_addon]
-        addon["Status"] = "True"
-        config.write()
+
+        if addon["Status"] == "False":
+            addon["Status"] = "True"
+            config.write()
+            return True
+        elif addon["Status"] == "True":
+            return "Este addon ya esta activado"
+
+
 
     # Desactivar addon
     def disable_addon(self, id_addon):
         config = ConfigObj(self.path + "/addons.cfg")
         addon = config[id_addon]
-        addon["Status"] = "False"
-        config.write()
+
+        if addon["Status"] == "True":
+            addon["Status"] = "False"
+            config.write()
+            return True
+        elif addon["Status"] == "False":
+            return "Este addon ya esta desactivado"
 
     # Listar addons
     def list_addons(self):
