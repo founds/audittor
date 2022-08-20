@@ -34,6 +34,7 @@ class Audittor():
         # Comprobar si existe el archivo de configuracion
         self.path = os.path.abspath(os.path.dirname(sys.argv[0]))
 
+
         if not os.path.exists(self.path + "/audittor.cfg"):
             pass
 
@@ -52,8 +53,10 @@ class Audittor():
             print(f"{RED}No se ha especificado ningún argumento. Se inicia la audición por defecto.{RESET}\n")
             exec_addons = AddonManager().load_addons()
 
+            print("\n - Ejecutando la auditación del sistema")
+
             for exec_addon in exec_addons:
-                AddonManager().exec_addon(exec_addon)
+                status = AddonManager().exec_addon(exec_addon)
 
             sys.exit(1)
 
@@ -79,11 +82,13 @@ class Audittor():
 
 
     def generate_log(self, data):
-        with open(self.path + "/log.txt", 'w') as sys.stdout:
+        '''with open(, 'w') as sys.stdout:
             print("Audittor %s" % VERSION)
             print("Fecha de analisis: %s    Hora de analisis: %s" % (datetime.today().strftime('%Y/%m/%d'),
                                                                      datetime.today().strftime('%H:%M:%S')))
             print("\n")
+'''
+
 
 
 if __name__ == '__main__':

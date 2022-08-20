@@ -8,6 +8,7 @@ from colorama import Fore
 from configobj import ConfigObj
 from tabulate import tabulate
 from pluginbase import PluginBase
+import logging
 
 RED = Fore.RED
 GREEN = Fore.GREEN
@@ -18,6 +19,8 @@ class AddonManager(object):
 
     def __init__(self):
         self.path = os.path.abspath(os.path.dirname(sys.argv[0]))
+
+        logging.basicConfig(filename=self.path + "/log.txt", level=logging.DEBUG)
 
         if not os.path.exists(self.path + "/addons.cfg"):
             self.newconfigfiles()
@@ -99,7 +102,7 @@ class AddonManager(object):
 
             if addon['Status'] == "True":
                 print(f"{GREEN}   - " + plugin_module.NAME + " " + plugin_module.VERSION + f"{RESET}")
-                addon_name.append(plugin_module.ID)
+                addon_name.append([plugin_module.ID, plugin_module.CATEGORY])
             else:
                 print(f"{RED}   - %s: Addons presentes pero no activo.{RESET}" % plugin_module.NAME)
                 continue
@@ -114,22 +117,51 @@ class AddonManager(object):
         # Each application has a name
         self.name = name
 
-        source = self.plugin_base.make_plugin_source(
-            searchpath=[self.get_path(self.path + '/addons/%s') % name],
-            identifier=self.name)
+        here = os.path.abspath(os.path.dirname(__file__))
+        get_path = partial(os.path.join, here)
 
-        print("\n - Ejecutando la auditación del sistema")
-        print(f"\n{GREEN}   - Auditando: %s {RESET}\n" % self.name)
+        plugin_base = PluginBase(package='audittor',
+                                 searchpath=[get_path(self.path + '/addons')])
 
-        for addon_name in source.list_plugins():
+        if len(name) > 2:
+            for addon in name:
+                source = plugin_base.make_plugin_source(
+
+                    searchpath=[get_path(self.path + '/addons/%s/') % addon[1]],
+                    identifier=addon[0])
+
+                print(f"\n{GREEN}   - Auditando: %s {RESET}\n" % addon[0])
+
+        elif len(name) == 2:
+            source = plugin_base.make_plugin_source(
+
+                searchpath=[get_path(self.path + '/addons/%s/') % name[1]],
+                identifier=name[0])
+
+            print(f"\n{GREEN}   - Auditando: %s {RESET}\n" % name[0])
+
+            for addon_name in source.list_plugins():
+                addon = source.load_plugin(addon_name)
+
+                try:
+                    if addon.is_addon(self):
+                        print(f"{GREEN}     - %s finalizado: OK {RESET}" % name[0])
+
+                except KeyError:
+                    print(f"{RED}     - Addon no encontrado pero registrado: " + name[0] + f"{RESET}")
+        
+        '''for addon_name in source.list_plugins():
+            print(addon_name)
             addon = source.load_plugin(addon_name)
-
+            addon.is_addon(self)
             try:
-                if addon.is_addon(self):
+                if :
                     print(f"\n{GREEN}     - %s: OK {RESET}" % self.name)
 
             except KeyError:
-                print(f"{RED}     - Addon no encontrado pero registrado: " + self.name + f"{RESET}")
+                print(f"{RED}     - Addon no encontrado pero registrado: " + self.name + f"{RESET}")'''
+
+        return True
 
     # Activar addon
     def enable_addon(self, id_addon):
