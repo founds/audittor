@@ -129,6 +129,3 @@ dmypy.json
 .pyre/
 
 .idea
-/audittor/addons.cfg
-/log.txt
-/audittor/log.txt

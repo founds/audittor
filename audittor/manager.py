@@ -9,7 +9,10 @@ from configobj import ConfigObj
 from tabulate import tabulate
 from pluginbase import PluginBase
 import logging
+from datetime import datetime
 
+
+VERSION = "v0.3"
 RED = Fore.RED
 GREEN = Fore.GREEN
 RESET = Fore.RESET
@@ -21,6 +24,11 @@ class AddonManager(object):
         self.path = os.path.abspath(os.path.dirname(sys.argv[0]))
 
         logging.basicConfig(filename=self.path + "/log.txt", level=logging.DEBUG)
+
+        logging.debug("Audittor %s" % VERSION)
+
+        logging.debug("Fecha de analisis: %s    Hora de analisis: %s" % (datetime.today().strftime('%Y/%m/%d'),
+                                                                 datetime.today().strftime('%H:%M:%S')))
 
         if not os.path.exists(self.path + "/addons.cfg"):
             self.newconfigfiles()
@@ -64,7 +72,8 @@ class AddonManager(object):
         with os.scandir(get_path(self.path + '/addons')) as ficheros:
             subdirectorios = [fichero.name for fichero in ficheros if fichero.is_dir()]
 
-        subdirectorios.remove("__pycache__")
+        if "__pycache__" in subdirectorios:
+            subdirectorios.remove("__pycache__")
 
         plugin_dir = get_path(self.path + '/addons')
 
@@ -149,17 +158,6 @@ class AddonManager(object):
 
                 except KeyError:
                     print(f"{RED}     - Addon no encontrado pero registrado: " + name[0] + f"{RESET}")
-        
-        '''for addon_name in source.list_plugins():
-            print(addon_name)
-            addon = source.load_plugin(addon_name)
-            addon.is_addon(self)
-            try:
-                if :
-                    print(f"\n{GREEN}     - %s: OK {RESET}" % self.name)
-
-            except KeyError:
-                print(f"{RED}     - Addon no encontrado pero registrado: " + self.name + f"{RESET}")'''
 
         return True
 

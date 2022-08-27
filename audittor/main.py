@@ -4,13 +4,11 @@
 from manager import AddonManager
 import os
 import sys
-from datetime import datetime
 import argparse
 from colorama import Fore
 
 
 VERSION = "v0.3"
-
 RED = Fore.RED
 RESET = Fore.RESET
 
@@ -84,8 +82,7 @@ class Audittor():
     def generate_log(self, data):
         '''with open(, 'w') as sys.stdout:
             print("Audittor %s" % VERSION)
-            print("Fecha de analisis: %s    Hora de analisis: %s" % (datetime.today().strftime('%Y/%m/%d'),
-                                                                     datetime.today().strftime('%H:%M:%S')))
+
             print("\n")
 '''
 

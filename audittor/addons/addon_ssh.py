@@ -8,7 +8,6 @@ RED = Fore.RED
 GREEN = Fore.GREEN
 RESET = Fore.RESET
 
-ID = 'addon_ssh'
 NAME = 'check_ssh'
 VERSION = '0.2'
 DESCRIPTION = 'Analisis servicio SSH'
