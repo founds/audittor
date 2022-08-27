@@ -2,3 +2,7 @@ blkinfo==0.2.0
 colorama==0.4.5
 pluginbase==1.0.1
 psutil==5.9.1
+
+configobj~=5.0.6
+tabulate~=0.8.10
+setuptools~=64.0.3
