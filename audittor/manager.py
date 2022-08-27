@@ -6,16 +6,29 @@ import sys
 from functools import partial
 from colorama import Fore
 from configobj import ConfigObj
+from tabulate import tabulate
 from pluginbase import PluginBase
+import logging
+from datetime import datetime
 
+
+VERSION = "v0.3"
 RED = Fore.RED
 GREEN = Fore.GREEN
 RESET = Fore.RESET
+
 
 class AddonManager(object):
 
     def __init__(self):
         self.path = os.path.abspath(os.path.dirname(sys.argv[0]))
+
+        logging.basicConfig(filename=self.path + "/log.txt", level=logging.DEBUG)
+
+        logging.debug("Audittor %s" % VERSION)
+
+        logging.debug("Fecha de analisis: %s    Hora de analisis: %s" % (datetime.today().strftime('%Y/%m/%d'),
+                                                                 datetime.today().strftime('%H:%M:%S')))
 
         if not os.path.exists(self.path + "/addons.cfg"):
             self.newconfigfiles()
@@ -28,8 +41,6 @@ class AddonManager(object):
         self.plugin_base = PluginBase(
             package='addons', searchpath=[self.plugin_dir]
         )
-
-        self.load_addons()
 
     # Crear archivo de addons base
     def newconfigfiles(self):
@@ -61,7 +72,8 @@ class AddonManager(object):
         with os.scandir(get_path(self.path + '/addons')) as ficheros:
             subdirectorios = [fichero.name for fichero in ficheros if fichero.is_dir()]
 
-        subdirectorios.remove("__pycache__")
+        if "__pycache__" in subdirectorios:
+            subdirectorios.remove("__pycache__")
 
         plugin_dir = get_path(self.path + '/addons')
 
@@ -99,7 +111,7 @@ class AddonManager(object):
 
             if addon['Status'] == "True":
                 print(f"{GREEN}   - " + plugin_module.NAME + " " + plugin_module.VERSION + f"{RESET}")
-                addon_name.append(plugin_module.ID)
+                addon_name.append([plugin_module.ID, plugin_module.CATEGORY])
             else:
                 print(f"{RED}   - %s: Addons presentes pero no activo.{RESET}" % plugin_module.NAME)
                 continue
@@ -114,74 +126,99 @@ class AddonManager(object):
         # Each application has a name
         self.name = name
 
-        # And a dictionary where it stores "formatters".  These will be
-        # functions provided by plugins which format strings.
-        self.formatters = {}
+        here = os.path.abspath(os.path.dirname(__file__))
+        get_path = partial(os.path.join, here)
 
-        # and a source which loads the plugins from the "app_name/plugins"
-        # folder.  We also pass the application name as identifier.  This
-        # is optional but by doing this out plugins have consistent
-        # internal module names which allows pickle to work.
+        plugin_base = PluginBase(package='audittor',
+                                 searchpath=[get_path(self.path + '/addons')])
 
-        source = self.plugin_base.make_plugin_source(
-            searchpath=[self.get_path(self.path + '/addons/%s') % name],
-            identifier=self.name)
+        if len(name) > 2:
+            for addon in name:
+                source = plugin_base.make_plugin_source(
 
-        print("\n - Ejecutando la auditación del sistema")
-        print(f"\n{GREEN}   - Auditando: %s {RESET}\n" % self.name)
+                    searchpath=[get_path(self.path + '/addons/%s/') % addon[1]],
+                    identifier=addon[0])
 
-        # Here we list all the plugins the source knows about, load them
-        # and the use the "setup" function provided by the plugin to
-        # initialize the plugin.
-        for addon_name in source.list_plugins():
-            addon = source.load_plugin(addon_name)
+                print(f"\n{GREEN}   - Auditando: %s {RESET}\n" % addon[0])
 
-            try:
-                if addon.is_addon(self):
-                    print(f"\n{GREEN}     - %s: OK {RESET}" % self.name)
+        elif len(name) == 2:
+            source = plugin_base.make_plugin_source(
 
-            except KeyError:
-                print(f"{RED}     - Addon no encontrado pero registrado: " + self.name + f"{RESET}")
+                searchpath=[get_path(self.path + '/addons/%s/') % name[1]],
+                identifier=name[0])
 
+            print(f"\n{GREEN}   - Auditando: %s {RESET}\n" % name[0])
 
-    def register_formatter(self, name, formatter):
-        """A function a plugin can use to register a formatter."""
-        self.formatters[name] = formatter
+            for addon_name in source.list_plugins():
+                addon = source.load_plugin(addon_name)
 
-def run_demo(app, source):
-    """Shows all formatters in demo mode of an application."""
-    print('Formatters for %s:' % app.name)
-    print('       input: %s' % source)
-    for name, fmt in sorted(app.formatters.items()):
-        print('  %10s: %s' % (name, fmt(source)))
-    print('')
+                try:
+                    if addon.is_addon(self):
+                        print(f"{GREEN}     - %s finalizado: OK {RESET}" % name[0])
 
-def main():
-    # This is the demo string we want to format.
-    source = 'This is a cool demo text to show this functionality.'
+                except KeyError:
+                    print(f"{RED}     - Addon no encontrado pero registrado: " + name[0] + f"{RESET}")
 
-    # Set up two applications.  One loads plugins from ./app1/plugins
-    # and the second one from ./app2/plugins.  Both will also load
-    # the default ./builtin_plugins.
-    app1 = AddonManager('app1')
-    app2 = AddonManager('app2')
+        return True
 
-    # Run the demo for both
-    run_demo(app1, source)
-    run_demo(app2, source)
+    # Activar addon
+    def enable_addon(self, id_addon):
+        config = ConfigObj(self.path + "/addons.cfg")
+        addon = config[id_addon]
 
-    # And just to show how the import system works, we also showcase
-    # importing plugins regularly:
-    '''with app1.source:
-        from audittor.addons import addon_network
-        print('Plugin module: %s' % secret)'''
-
-if __name__ == '__main__':
-    main()
+        if addon["Status"] == "False":
+            addon["Status"] = "True"
+            config.write()
+            return True
+        elif addon["Status"] == "True":
+            return "Este addon ya esta activado"
 
 
-'''
-class AddonManager2:
 
-    
-'''
+    # Desactivar addon
+    def disable_addon(self, id_addon):
+        config = ConfigObj(self.path + "/addons.cfg")
+        addon = config[id_addon]
+
+        if addon["Status"] == "True":
+            addon["Status"] = "False"
+            config.write()
+            return True
+        elif addon["Status"] == "False":
+            return "Este addon ya esta desactivado"
+
+    # Listar addons
+    def list_addons(self):
+        addon_dict = {}
+
+        here = os.path.abspath(os.path.dirname(__file__))
+        get_path = partial(os.path.join, here)
+
+        with os.scandir(get_path(self.path + '/addons')) as ficheros:
+            subdirectorios = [fichero.name for fichero in ficheros if fichero.is_dir()]
+
+        subdirectorios.remove("__pycache__")
+
+        plugin_dir = get_path(self.path + '/addons')
+
+        plugin_base = PluginBase(
+            package='addons', searchpath=[plugin_dir]
+        )
+
+        addons = []
+
+        for path_addon in subdirectorios:
+            plugin_source = plugin_base.make_plugin_source(
+                searchpath=[get_path(self.path + '/addons/%s') % path_addon], persist=True)
+
+            for plugin_name in plugin_source.list_plugins():
+                addon_dict[plugin_name] = plugin_source.load_plugin(plugin_name)
+
+            addons.append(
+                [addon_dict[plugin_name].ID, addon_dict[plugin_name].NAME, addon_dict[plugin_name].VERSION,
+                 addon_dict[plugin_name].DESCRIPTION, ]
+            )
+
+        print(tabulate(addons, headers=["ID", "NAME", "VERSION", "DESCRIPTION"], tablefmt='grid'))
+
+        return addon_dict
