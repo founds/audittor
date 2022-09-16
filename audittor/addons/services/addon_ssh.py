@@ -18,7 +18,6 @@ def is_addon(self):
     check_ssh()
 
 def check_ssh():
-    print("Consultando si existe el servicio....")
     status = os.system('systemctl is-active --quiet sshd')
 
     if status == 0:
@@ -29,9 +28,16 @@ def check_ssh():
             with open("/etc/ssh/sshd_config") as file:
                 datafile = file.readlines()
 
+            checks(datafile)
+
     else:
         print(f"{GREEN}     - No se ha encontrado servicio SSH activo.{RESET}")
         return True
+
+def checks(datas):
+    for data in datas:
+        if "Port 22" in data:
+            print(f"{RED}   - Se está usando un puerto por defecto.{RESET}")
 
 
 
