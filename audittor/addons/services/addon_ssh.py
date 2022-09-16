@@ -18,6 +18,7 @@ def is_addon(self):
     check_ssh()
 
 def check_ssh():
+    print("Consultando si existe el servicio....")
     status = os.system('systemctl is-active --quiet sshd')
 
     if status == 0:
