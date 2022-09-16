@@ -36,16 +36,19 @@ class Audittor():
         if not os.path.exists(self.path + "/audittor.cfg"):
             pass
 
-        if not sys.argv[1] == "-L":
-            self.parser = argparse.ArgumentParser(description="Opciones de Audittor",
-                                                  argument_default=argparse.SUPPRESS)
-            # self.parser.add_argument("-L", "--list_addons", help="Muestra todos los addons.")
-            self.parser.add_argument("-e", "--enabled_addons", help="Activar addon.", type=str, )
-            self.parser.add_argument("-d", "--disabled_addons", help="Desactivar addon.", type=str, )
+        if len(sys.argv) <= 1:
+            pass
+        else:
+            if sys.argv[1] == "-L":
+                self.parser = argparse.ArgumentParser(description="Opciones de Audittor",
+                                                      argument_default=argparse.SUPPRESS)
+                #self.parser.add_argument("-L", "--list_addons", help="Muestra todos los addons.")
+                self.parser.add_argument("-e", "--enabled_addons", help="Activar addon.", type=str, )
+                self.parser.add_argument("-d", "--disabled_addons", help="Desactivar addon.", type=str, )
 
     def audittor_cli(self):
 
-        if len(sys.argv) < 2:
+        if len(sys.argv) <= 1:
             print(f"{RED}No se ha especificado ningún argumento. Se inicia la audición por defecto.{RESET}\n")
             exec_addons = AddonManager().load_addons()
 
@@ -55,28 +58,28 @@ class Audittor():
                 status = AddonManager().exec_addon(exec_addon)
 
             sys.exit(1)
-
-        if sys.argv[1] == "-L":
-            AddonManager().read_addons()
         else:
-            args = self.parser.parse_args()
+            if sys.argv[1] == "-L":
+                AddonManager().read_addons()
+            else:
+                args = self.parser.parse_args()
 
-            if args.enabled_addons:
-                print("Activando addon: %s" % args.enabled_addons)
-                status = AddonManager().enable_addon(args.enabled_addons)
+                if args.enabled_addons:
+                    print("Activando addon: %s" % args.enabled_addons)
+                    status = AddonManager().enable_addon(args.enabled_addons)
 
-                if status == True:
-                    print("Addon %s activado", args.enabled_addons)
-                else:
-                    print(f"{RED} - %s {RESET}" % status)
+                    if status == True:
+                        print("Addon %s activado", args.enabled_addons)
+                    else:
+                        print(f"{RED} - %s {RESET}" % status)
 
-            if args.disabled_addons:
-                print("Desactivando addon: %s" % args.disabled_addons)
-                status = AddonManager().disable_addon(args.disabled_addons)
-                if status == True:
-                    print("Addon %s desactivado" % args.disabled_addons)
-                else:
-                    print(f"{RED} - %s {RESET}" % status)
+                if args.disabled_addons:
+                    print("Desactivando addon: %s" % args.disabled_addons)
+                    status = AddonManager().disable_addon(args.disabled_addons)
+                    if status == True:
+                        print("Addon %s desactivado" % args.disabled_addons)
+                    else:
+                        print(f"{RED} - %s {RESET}" % status)
 
 
     def generate_log(self, data):
