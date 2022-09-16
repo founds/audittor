@@ -28,22 +28,22 @@ def check_ssh():
             with open("/etc/ssh/sshd_config") as file:
                 datafile = file.readlines()
 
-            checks(datafile)
+                checks(datafile)
 
     else:
         print(f"{GREEN}     - No se ha encontrado servicio SSH activo.{RESET}")
         return True
 
 def checks(datas):
+    for data in datas:
+        if "Port 22" in data:
+            print(f"{RED}   - Se está usando el puerto 22, este es un puerto por defecto.{RESET}")
 
-    if "Port 22" in datas:
-        print(f"{RED}   - Se está usando el puerto 22, este es un puerto por defecto.{RESET}")
+        if "PermitRootLogin yes" or "#PermitRootLogin no" in data:
+            print(f"{RED}   - Se permite el acceso al usuario root.{RESET}")
 
-    if "PermitRootLogin yes" or "#PermitRootLogin no" in datas:
-        print(f"{RED}   - Se permite el acceso al usuario root.{RESET}")
-
-    if "#StrictModes yes" or "StrictModes no" in datas:
-        print(f"{RED}   - El modo estricto no esta activo.{RESET}")
+        if "#StrictModes yes" or "StrictModes no" in data:
+            print(f"{RED}   - El modo estricto no esta activo.{RESET}")
 
 
 
