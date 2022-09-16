@@ -10,7 +10,7 @@ RESET = Fore.RESET
 
 ID = 'addon_ssh'
 NAME = 'check_ssh'
-VERSION = '0.3.1'
+VERSION = '0.3.2'
 CATEGORY = 'services'
 DESCRIPTION = 'Analisis servicio SSH'
 
@@ -21,7 +21,7 @@ def check_ssh():
     status = os.system('systemctl is-active --quiet sshd')
 
     if status == 0:
-        print("Se ha encontrado servicio SSH activo.")  # will return 0 for active else inactive.
+        print("     - Se ha encontrado servicio SSH activo.")  # will return 0 for active else inactive.
 
         # Comprobar que exista el archivo de configuración
         if os.path.exists("/etc/ssh/sshd_config"):
@@ -34,13 +34,13 @@ def check_ssh():
 
 def checks(data):
     if "Port 22" in data:
-        print(f"{RED}   - Se está usando el puerto 22, este es un puerto por defecto.{RESET}")
+        print(f"{RED}       - Se está usando el puerto 22, este es un puerto por defecto.{RESET}")
 
     if "PermitRootLogin yes" or "#PermitRootLogin no" in data:
-        print(f"{RED}   - Se permite el acceso al usuario root.{RESET}")
+        print(f"{RED}       - Se permite el acceso al usuario root.{RESET}")
 
     if "#StrictModes yes" or "StrictModes no" in data:
-        print(f"{RED}   - El modo estricto no esta activo.{RESET}")
+        print(f"{RED}       - El modo estricto no esta activo.{RESET}")
 
 
 
