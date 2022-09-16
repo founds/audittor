@@ -35,11 +35,15 @@ def check_ssh():
         return True
 
 def checks(datas):
-    for data in datas:
-        if "Port 22" in data:
-            print(f"{RED}   - Se está usando el puerto 22, este es un puerto por defecto.{RESET}")
-        if "PermitRootLogin yes" or "#PermitRootLogin no":
-            print(f"{RED}   - Se permite el acceso al usuario root.{RESET}")
+
+    if "Port 22" in datas:
+        print(f"{RED}   - Se está usando el puerto 22, este es un puerto por defecto.{RESET}")
+
+    if "PermitRootLogin yes" or "#PermitRootLogin no":
+        print(f"{RED}   - Se permite el acceso al usuario root.{RESET}")
+
+    if "StrictModes yes":
+        print(f"{RED}   - StrictModes.{RESET}")
 
 
 
