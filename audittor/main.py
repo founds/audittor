@@ -36,16 +36,6 @@ class Audittor():
         if not os.path.exists(self.path + "/audittor.cfg"):
             pass
 
-        if len(sys.argv) <= 1:
-            pass
-        else:
-            if sys.argv[1] == "-L":
-                self.parser = argparse.ArgumentParser(description="Opciones de Audittor",
-                                                      argument_default=argparse.SUPPRESS)
-                #self.parser.add_argument("-L", "--list_addons", help="Muestra todos los addons.")
-                self.parser.add_argument("-e", "--enabled_addons", help="Activar addon.", type=str, )
-                self.parser.add_argument("-d", "--disabled_addons", help="Desactivar addon.", type=str, )
-
     def audittor_cli(self):
 
         if len(sys.argv) <= 1:
@@ -59,8 +49,12 @@ class Audittor():
 
             sys.exit(1)
         else:
-            if sys.argv[1] == "-L":
+            if sys.argv[1] == "-l":
                 AddonManager().read_addons()
+            elif sys.argv[1] == "-e":
+                pass
+            elif sys.argv[1] == "-d":
+                pass
             else:
                 args = self.parser.parse_args()
 
