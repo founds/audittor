@@ -59,8 +59,6 @@ class Audittor():
                 else:
                     print(f"{RED} - %s {RESET}" % status)
             elif sys.argv[1] == "-d":
-                pass
-            else:
                 if sys.argv[1]:
                     print("Desactivando addon: %s" % sys.argv[2])
                     status = AddonManager().disable_addon(sys.argv[2])
