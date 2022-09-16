@@ -10,7 +10,8 @@ RESET = Fore.RESET
 
 ID = 'addon_ssh'
 NAME = 'check_ssh'
-VERSION = '0.2'
+VERSION = '0.3'
+CATEGORY = 'services'
 DESCRIPTION = 'Analisis servicio SSH'
 
 def is_addon(self):
@@ -24,7 +25,9 @@ def check_ssh():
 
         # Comprobar que exista el archivo de configuración
         if os.path.exists("/etc/ssh/sshd_config"):
-            print("Existe")
+            with open("/etc/ssh/sshd_config") as file:
+                datafile = file.readlines()
+
     else:
         print(f"{GREEN}     - No se ha encontrado servicio SSH activo.{RESET}")
         return True
