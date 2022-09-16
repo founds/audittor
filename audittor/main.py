@@ -55,17 +55,17 @@ class Audittor():
                 print("Activando addon: %s" % sys.argv[2])
                 status = AddonManager().enable_addon(sys.argv[2])
                 if status == True:
-                    print("Addon %s activado", sys.argv[2])
+                    print("Addon %s activado" % sys.argv[2])
                 else:
                     print(f"{RED} - %s {RESET}" % status)
             elif sys.argv[1] == "-d":
                 pass
             else:
-                if args.disabled_addons:
-                    print("Desactivando addon: %s" % args.disabled_addons)
-                    status = AddonManager().disable_addon(args.disabled_addons)
+                if sys.argv[1]:
+                    print("Desactivando addon: %s" % sys.argv[2])
+                    status = AddonManager().disable_addon(sys.argv[2])
                     if status == True:
-                        print("Addon %s desactivado" % args.disabled_addons)
+                        print("Addon %s desactivado" % sys.argv[2])
                     else:
                         print(f"{RED} - %s {RESET}" % status)
 
