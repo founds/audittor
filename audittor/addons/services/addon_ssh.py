@@ -26,9 +26,7 @@ def check_ssh():
         # Comprobar que exista el archivo de configuración
         if os.path.exists("/etc/ssh/sshd_config"):
             with open("/etc/ssh/sshd_config") as file:
-                datafile = file.readlines()
-
-                checks(datafile)
+                checks(file.read())
 
     else:
         print(f"{GREEN}     - No se ha encontrado servicio SSH activo.{RESET}")
