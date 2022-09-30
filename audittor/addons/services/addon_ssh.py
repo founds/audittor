@@ -10,7 +10,7 @@ RESET = Fore.RESET
 
 ID = 'addon_ssh'
 NAME = 'check_ssh'
-VERSION = '0.3.2'
+VERSION = '0.3.3'
 CATEGORY = 'services'
 DESCRIPTION = 'Analisis servicio SSH'
 
@@ -38,47 +38,57 @@ def checks(data):
 
     if "Port 22" in data:
         print(f"{RED}       - Se está usando el puerto 22, este es un puerto por defecto.{RESET}")
-        print("        No se recomienda usar el puerto por defecto.")
+        print("         No se recomienda usar el puerto por defecto.\n")
         nerrors += 1
 
     if "PermitRootLogin yes" or "#PermitRootLogin no" in data:
         print(f"{RED}       - Se permite el acceso al usuario root.{RESET}")
-        print("        .")
+        print("         .\n")
         nerrors += 1
 
     if "#StrictModes yes" in data:
         print(f"{RED}       - El modo estricto no esta activo.{RESET}")
-        print("        .")
+        print("         .\n")
         nerrors += 1
 
     if "StrictModes no" in data:
         print(f"{RED}       - El modo estricto no esta activo.{RESET}")
-        print("        .")
+        print("         .\n")
         nerrors += 1
 
     if "#bantime" in data:
         print(f"{RED}       - No esta establecido el tiempo de baneo.{RESET}")
-        print("        .")
+        print("         .\n")
         nerrors += 1
 
     if "#maxretry" in data:
         print(f"{RED}       - No esta establecido el número de maximo de intentos.{RESET}")
-        print("        Tiempo para la desconeción si el usuario no logra logarse.")
+        print("         Tiempo para la desconeción si el usuario no logra logarse.\n")
         nerrors += 1
 
     if "#Protocol" in data:
         print(f"{RED}       - No esta establecido el número de maximo de intentos.{RESET}")
-        print("        Tiempo para la desconeción si el usuario no logra logarse.")
+        print("         Tiempo para la desconeción si el usuario no logra logarse.\n")
         nerrors += 1
 
     if "#LoginGraceTime" in data:
         print(f"{RED}       - No esta establecido el tiempo maximo de loging.{RESET}")
-        print("        Tiempo que tiene un usuario para loguearse en el sistema correctamente.")
+        print("         Tiempo que tiene un usuario para loguearse en el sistema correctamente.\n")
         nerrors += 1
 
     if "#UsePrivilegeSeparation" in data:
         print(f"{RED}       - No esta establecido la separación de privilegios.{RESET}")
-        print("        .")
+        print("         .\n")
+        nerrors += 1
+
+    if "#MaxAuthTries" in data:
+        print(f"{RED}       - No esta especificado el número de intentos de autenticación permitidos por conexión.{RESET}")
+        print("         Número máximo de intentos de autenticación permitidos por conexión.\n")
+        nerrors += 1
+
+    if "#MaxSessions" in data:
+        print(f"{RED}       - No esta especificado el número máximo de sessiones.{RESET}")
+        print("         Permite especificar el número máximo de sesiones abiertas.\n")
         nerrors += 1
 
     return nerrors
