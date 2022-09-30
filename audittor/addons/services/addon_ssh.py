@@ -21,7 +21,7 @@ def check_ssh():
     status = os.system('systemctl is-active --quiet sshd')
 
     if status == 0:
-        print("     -> Se ha encontrado servicio SSH activo.")  # will return 0 for active else inactive.
+        print("     -> Se ha encontrado servicio SSH activo.\n")  # will return 0 for active else inactive.
 
         # Comprobar que exista el archivo de configuración
         if os.path.exists("/etc/ssh/sshd_config"):
@@ -35,44 +35,50 @@ def check_ssh():
 
 def checks(data):
     nerrors = 0
+
     if "Port 22" in data:
         print(f"{RED}       - Se está usando el puerto 22, este es un puerto por defecto.{RESET}")
-        print("             No se recomienda usar el puerto por defecto.")
+        print("        No se recomienda usar el puerto por defecto.")
         nerrors += 1
 
     if "PermitRootLogin yes" or "#PermitRootLogin no" in data:
         print(f"{RED}       - Se permite el acceso al usuario root.{RESET}")
-        print("             .")
+        print("        .")
         nerrors += 1
 
-    if "#StrictModes yes" or "StrictModes no" in data:
+    if "#StrictModes yes" in data:
         print(f"{RED}       - El modo estricto no esta activo.{RESET}")
-        print("             .")
+        print("        .")
+        nerrors += 1
+
+    if "StrictModes no" in data:
+        print(f"{RED}       - El modo estricto no esta activo.{RESET}")
+        print("        .")
         nerrors += 1
 
     if "#bantime" in data:
         print(f"{RED}       - No esta establecido el tiempo de baneo.{RESET}")
-        print("             .")
+        print("        .")
         nerrors += 1
 
     if "#maxretry" in data:
         print(f"{RED}       - No esta establecido el número de maximo de intentos.{RESET}")
-        print("             Tiempo para la desconeción si el usuario no logra logarse.")
+        print("        Tiempo para la desconeción si el usuario no logra logarse.")
         nerrors += 1
 
     if "#Protocol" in data:
         print(f"{RED}       - No esta establecido el número de maximo de intentos.{RESET}")
-        print("             Tiempo para la desconeción si el usuario no logra logarse.")
+        print("        Tiempo para la desconeción si el usuario no logra logarse.")
         nerrors += 1
 
     if "#LoginGraceTime" in data:
         print(f"{RED}       - No esta establecido el tiempo maximo de loging.{RESET}")
-        print("             Tiempo que tiene un usuario para loguearse en el sistema correctamente.")
+        print("        Tiempo que tiene un usuario para loguearse en el sistema correctamente.")
         nerrors += 1
 
     if "#UsePrivilegeSeparation" in data:
         print(f"{RED}       - No esta establecido la separación de privilegios.{RESET}")
-        print("             .")
+        print("        .")
         nerrors += 1
 
     return nerrors
