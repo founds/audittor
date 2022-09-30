@@ -71,6 +71,11 @@ def checks(data):
         print("         Tiempo para la desconeción si el usuario no logra logarse.\n")
         nerrors += 1
 
+    if "Protocol" not in data:
+        print(f"{RED}       - No esta establecido el número de maximo de intentos.{RESET}")
+        print("         Tiempo para la desconeción si el usuario no logra logarse.\n")
+        nerrors += 1
+
     if "#LoginGraceTime" in data:
         print(f"{RED}       - No esta establecido el tiempo maximo de loging.{RESET}")
         print("         Tiempo que tiene un usuario para loguearse en el sistema correctamente.\n")
