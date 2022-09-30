@@ -26,21 +26,38 @@ def check_ssh():
         # Comprobar que exista el archivo de configuración
         if os.path.exists("/etc/ssh/sshd_config"):
             with open("/etc/ssh/sshd_config") as file:
-                checks(file.read())
-
+                nerrors = checks(file.read())
     else:
         print(f"{GREEN}     - No se ha encontrado servicio SSH activo.{RESET}")
         return True
 
+    print(f" - Nº de errores encontrados: %s" % nerrors)
+
 def checks(data):
+    nerrors = 0
     if "Port 22" in data:
         print(f"{RED}       - Se está usando el puerto 22, este es un puerto por defecto.{RESET}")
+        nerrors += 1
 
     if "PermitRootLogin yes" or "#PermitRootLogin no" in data:
         print(f"{RED}       - Se permite el acceso al usuario root.{RESET}")
+        nerrors += 1
 
     if "#StrictModes yes" or "StrictModes no" in data:
         print(f"{RED}       - El modo estricto no esta activo.{RESET}")
+        nerrors += 1
+
+    if "#bantime" in data:
+        print(f"{RED}       - No esta establecido el tiempo de baneo.{RESET}")
+        nerrors += 1
+
+    if "#maxretry" in data:
+        print(f"{RED}       - No esta establecido el número de maximo de intentos.{RESET}\n")
+        print("               Tiempo para la desconeción si el usuario no logra logarse.")
+        nerrors += 1
+
+    return nerrors
+
 
 
 
