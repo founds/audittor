@@ -36,24 +36,43 @@ def check_ssh():
 def checks(data):
     nerrors = 0
     if "Port 22" in data:
-        print(f"{RED}       - Se está usando el puerto 22, este es un puerto por defecto.{RESET}")
+        print(f"{RED}       - Se está usando el puerto 22, este es un puerto por defecto.{RESET}\n")
+        print("               No se recomienda usar el puerto por defecto.")
         nerrors += 1
 
     if "PermitRootLogin yes" or "#PermitRootLogin no" in data:
         print(f"{RED}       - Se permite el acceso al usuario root.{RESET}")
+        print("               .")
         nerrors += 1
 
     if "#StrictModes yes" or "StrictModes no" in data:
         print(f"{RED}       - El modo estricto no esta activo.{RESET}")
+        print("               .")
         nerrors += 1
 
     if "#bantime" in data:
         print(f"{RED}       - No esta establecido el tiempo de baneo.{RESET}")
+        print("               .")
         nerrors += 1
 
     if "#maxretry" in data:
         print(f"{RED}       - No esta establecido el número de maximo de intentos.{RESET}\n")
         print("               Tiempo para la desconeción si el usuario no logra logarse.")
+        nerrors += 1
+
+    if "#Protocol" in data:
+        print(f"{RED}       - No esta establecido el número de maximo de intentos.{RESET}\n")
+        print("               Tiempo para la desconeción si el usuario no logra logarse.")
+        nerrors += 1
+
+    if "#LoginGraceTime" in data:
+        print(f"{RED}       - No esta establecido el tiempo maximo de loging.{RESET}\n")
+        print("               Tiempo que tiene un usuario para loguearse en el sistema correctamente.")
+        nerrors += 1
+
+    if "#UsePrivilegeSeparation" in data:
+        print(f"{RED}       - No esta establecido la separación de privilegios.{RESET}\n")
+        print("               .")
         nerrors += 1
 
     return nerrors
