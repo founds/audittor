@@ -46,6 +46,16 @@ def checks(data):
         print("         .\n")
         nerrors += 1
 
+    if "#PermitRootLogin no" in data:
+        print(f"{RED}       - PermitRootLogin: Se permite el acceso al usuario root.{RESET}")
+        print("         .\n")
+        nerrors += 1
+
+    if "PermitRootLogin" not in data:
+        print(f"{RED}       - PermitRootLogin: Se permite el acceso al usuario root.{RESET}")
+        print("         .\n")
+        nerrors += 1
+
     if "#StrictModes yes" in data:
         print(f"{RED}       - StrictModes: El modo estricto no esta activo.{RESET}")
         print("         .\n")
@@ -56,7 +66,17 @@ def checks(data):
         print("         .\n")
         nerrors += 1
 
+    if "StrictModes" not in data:
+        print(f"{RED}       - StrictModes: El modo estricto no esta activo.{RESET}")
+        print("         .\n")
+        nerrors += 1
+
     if "#Bantime" in data:
+        print(f"{RED}       - Bantime: No esta establecido el tiempo de baneo.{RESET}")
+        print("         .\n")
+        nerrors += 1
+
+    if "Bantime" not in data:
         print(f"{RED}       - Bantime: No esta establecido el tiempo de baneo.{RESET}")
         print("         .\n")
         nerrors += 1
@@ -80,6 +100,7 @@ def checks(data):
         print(f"{RED}       - LoginGraceTime: No esta establecido el tiempo maximo de loging.{RESET}")
         print("         Tiempo que tiene un usuario para loguearse en el sistema correctamente.\n")
         nerrors += 1
+        
     if "LoginGraceTime" not in data:
         print(f"{RED}       - LoginGraceTime: No esta establecido el tiempo maximo de loging.{RESET}")
         print("         Tiempo que tiene un usuario para loguearse en el sistema correctamente.\n")
