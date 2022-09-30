@@ -86,6 +86,11 @@ def checks(data):
         print("         Tiempo para la desconeción si el usuario no logra logarse.\n")
         nerrors += 1
 
+    if "maxretry" not in data:
+        print(f"{RED}       - maxretry: No esta establecido el número de maximo de intentos.{RESET}")
+        print("         Tiempo para la desconeción si el usuario no logra logarse.\n")
+        nerrors += 1
+
     if "#Protocol" in data:
         print(f"{RED}       - Protocol: No esta establecido el protocolo de conexión.{RESET}")
         print("         .\n")
@@ -100,7 +105,7 @@ def checks(data):
         print(f"{RED}       - LoginGraceTime: No esta establecido el tiempo maximo de loging.{RESET}")
         print("         Tiempo que tiene un usuario para loguearse en el sistema correctamente.\n")
         nerrors += 1
-        
+
     if "LoginGraceTime" not in data:
         print(f"{RED}       - LoginGraceTime: No esta establecido el tiempo maximo de loging.{RESET}")
         print("         Tiempo que tiene un usuario para loguearse en el sistema correctamente.\n")
@@ -111,7 +116,18 @@ def checks(data):
         print("         .\n")
         nerrors += 1
 
+    if "UsePrivilegeSeparation" not in data:
+        print(f"{RED}       - UsePrivilegeSeparation: No esta establecido la separación de privilegios.{RESET}")
+        print("         .\n")
+        nerrors += 1
+
     if "#MaxAuthTries" in data:
+        print(f"{RED}       - MaxAuthTries: No esta especificado el número de intentos de autenticación permitidos "
+              f"por conexión.{RESET}")
+        print("         Número máximo de intentos de autenticación permitidos por conexión.\n")
+        nerrors += 1
+
+    if "MaxAuthTries" not in data:
         print(f"{RED}       - MaxAuthTries: No esta especificado el número de intentos de autenticación permitidos "
               f"por conexión.{RESET}")
         print("         Número máximo de intentos de autenticación permitidos por conexión.\n")
@@ -120,6 +136,23 @@ def checks(data):
     if "#MaxSessions" in data:
         print(f"{RED}       - MaxSessions: No esta especificado el número máximo de sessiones.{RESET}")
         print("         Permite especificar el número máximo de sesiones abiertas.\n")
+        nerrors += 1
+
+    if "MaxSessions" not in data:
+        print(f"{RED}       - MaxSessions: No esta especificado el número máximo de sessiones.{RESET}")
+        print("         Permite especificar el número máximo de sesiones abiertas.\n")
+        nerrors += 1
+
+    if "#PermitEmptyPasswords" in data:
+        print(f"{RED}       - PermitEmptyPasswords: No esta especificado el valor para contraseñas vacias.{RESET}")
+        print("         Permite especificar si el servidor aprobará (autorizará) el iniciar de sesión en cuentas de "
+              "usuarios con cadenas de contraseña vacías.\n")
+        nerrors += 1
+
+    if "PermitEmptyPasswords" not in data:
+        print(f"{RED}       - PermitEmptyPasswords: No esta especificado el valor para contraseñas vacias.{RESET}")
+        print("         Permite especificar si el servidor aprobará (autorizará) el iniciar de sesión en cuentas de"
+              " usuarios con cadenas de contraseña vacías.\n")
         nerrors += 1
 
     return nerrors
