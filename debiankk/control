@@ -1,0 +1,17 @@
+Source: audittor
+Section: unknown
+Priority: optional
+Maintainer: Altsys <info@altsys.es>
+Build-Depends: cdbs, debhelper, dh-python, python3-all
+Standards-Version: 4.2.1
+XS-Python-Version: 3.7
+Homepage: https://www.altsys.es
+Rules-Requires-Root: no
+
+Package: audittor
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}
+Description: <insert up to 60 chars description> (Python 3)
+ <insert long description, indented with spaces>
+ .
+ This package installs the library for Python 3.

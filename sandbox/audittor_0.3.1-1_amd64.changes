@@ -1,0 +1,35 @@
+Format: 1.8
+Date: Sat, 01 Oct 2022 21:59:18 +0200
+Source: audittor
+Binary: audittor
+Built-For-Profiles: noudeb
+Architecture: source amd64
+Version: 0.3.1-1
+Distribution: UNRELEASED
+Urgency: medium
+Maintainer: Altsys <info@altsys.es>
+Changed-By: Altsys <info@altsys.es>
+Description:
+ audittor   - <insert up to 60 chars description>
+Changes:
+ audittor (0.3.1-1) UNRELEASED; urgency=medium
+ .
+   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+Checksums-Sha1:
+ 8db2236f58dc712a7540aaf9b0f9530d5c98bdc0 821 audittor_0.3.1-1.dsc
+ 58f4d68dfec48be7be80daa1b9bb09536593c02f 7488 audittor_0.3.1.orig.tar.xz
+ 35de04cd6d015de3c569cd80673c978f0f3c03f5 8552 audittor_0.3.1-1.debian.tar.xz
+ afc44f3c074a689d88af88ac39f781fcc2674ca7 5843 audittor_0.3.1-1_amd64.buildinfo
+ 3107c3713f2652ceb048a6f6a5c326e80ef7f9f4 2304 audittor_0.3.1-1_amd64.deb
+Checksums-Sha256:
+ 46c91e841f8aacfdd6bfcdde3472b0c96573e0cefaefe351a0c90c2ae109df18 821 audittor_0.3.1-1.dsc
+ 9cfd324e26685ac5131c9fe0314d7d3a441bbe06fade1dbdde3b51175e7b9827 7488 audittor_0.3.1.orig.tar.xz
+ 9fd6f3b1b8e53a30f7c98655313a327270650b72316ec88729b451ef001aaf3c 8552 audittor_0.3.1-1.debian.tar.xz
+ 7eeba69058d69a8f325e01e600ef4e6040522ad120e6daf4796e78554a2d1feb 5843 audittor_0.3.1-1_amd64.buildinfo
+ 4085ccafca8707ada9b2f2ad1d43af456f0483708592b1b5cc9f557c79ffd963 2304 audittor_0.3.1-1_amd64.deb
+Files:
+ caf7505c271824d7ce58b2598675dd76 821 unknown optional audittor_0.3.1-1.dsc
+ 839779a11401b2b5e20124d3f0c55bdc 7488 unknown optional audittor_0.3.1.orig.tar.xz
+ 6f3fac95da4377838937919d87348c77 8552 unknown optional audittor_0.3.1-1.debian.tar.xz
+ 103f829a03e5f4e3a99d21c9f155c548 5843 unknown optional audittor_0.3.1-1_amd64.buildinfo
+ b73061ad80b454e89f15c324e4960051 2304 unknown optional audittor_0.3.1-1_amd64.deb

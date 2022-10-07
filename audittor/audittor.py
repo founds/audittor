@@ -8,7 +8,7 @@ import argparse
 from colorama import Fore
 
 
-VERSION = "v0.3"
+VERSION = "v0.3.1"
 RED = Fore.RED
 RESET = Fore.RESET
 
@@ -19,7 +19,7 @@ class Audittor():
         print("#################################################################")
         print("#################################################################")
         print("####                                                         ####")
-        print("####                       Audittor " + VERSION + "                     ####")
+        print("####                       Audittor " + VERSION + "                    ####")
         print("####                                                         ####")
         print("####                Simple auditor de sistema                ####")
         print("####                                                         ####")

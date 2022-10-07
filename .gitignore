@@ -130,3 +130,6 @@ dmypy.json
 
 .idea
 /Errores
+/audittor/.pybuild/
+/debian/
+/audittor.tar.xz

@@ -1,0 +1,13 @@
+Package: audittor
+Version: 0.3.1-1ubuntu1
+Architecture: all
+Maintainer: Altsys <info@altsys.es>
+Installed-Size: 23
+Depends: python3:any
+Section: unknown
+Priority: optional
+Homepage: https://www.altsys.es
+Description: <insert up to 60 chars description> (Python 3)
+ <insert long description, indented with spaces>
+ .
+ This package installs the library for Python 3.

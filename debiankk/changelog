@@ -1,0 +1,9 @@
+audittor (0.3.1-1ubuntu1) UNRELEASED; urgency=medium
+
+  [ Altsys ]
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+  [ altsys ]
+  * Compilation package 
+
+ -- altsys <altsys@valhalla>  Sat, 01 Oct 2022 14:39:03 +0200

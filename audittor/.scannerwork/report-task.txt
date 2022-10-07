@@ -1,0 +1,6 @@
+projectKey=audittor
+serverUrl=http://192.168.1.101:9000
+serverVersion=9.6.1.59531
+dashboardUrl=http://192.168.1.101:9000/dashboard?id=audittor
+ceTaskId=AYOVi5NtPv1uk4ukOlz_
+ceTaskUrl=http://192.168.1.101:9000/api/ce/task?id=AYOVi5NtPv1uk4ukOlz_

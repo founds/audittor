@@ -1,0 +1,2 @@
+?package(audittor):needs="X11" section="Applications/Science/Mathematics"\
+  title="audittor" command="/usr/bin/audittor"
