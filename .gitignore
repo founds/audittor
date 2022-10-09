@@ -133,3 +133,7 @@ dmypy.json
 /audittor/.pybuild/
 /debian/
 /audittor.tar.xz
+!/debiankk/
+!/sandbox/
+!/audittor/.scannerwork/
+!/audittor/.pybuild/
